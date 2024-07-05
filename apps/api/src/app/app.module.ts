@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
+import { PrismaModule } from './prisma/prisma.module'
+
 import { envSchema } from '../config/env'
 
 @Module({
@@ -9,6 +11,7 @@ import { envSchema } from '../config/env'
       isGlobal: true,
       validationSchema: envSchema,
     }),
+    PrismaModule,
   ],
   controllers: [],
   providers: [],
