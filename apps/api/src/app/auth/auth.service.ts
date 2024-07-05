@@ -21,7 +21,7 @@ export class AuthService {
       throw new BadRequestException({
         message: 'Validation Error',
         fields: {
-          email: 'Email already in use',
+          email: ['Email already exists'],
         },
       })
     }
@@ -40,13 +40,13 @@ export class AuthService {
 
     if (!user) {
       throw new BadRequestException({
-        message: 'Email or password is incorrect',
+        message: 'Incorrect email or password',
       })
     }
 
     if (user.password !== password) {
       throw new BadRequestException({
-        message: 'Email or password is incorrect',
+        message: 'Incorrect email or password',
       })
     }
 

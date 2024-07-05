@@ -1,13 +1,15 @@
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
+
+import { getAuthToken } from '@fe/core/utils/authToken'
 
 function AuthLayout() {
-  return (
-    <div>
-      <div>AuthLayout</div>
+  const authToken = getAuthToken()
 
-      <Outlet />
-    </div>
-  )
+  if (authToken) {
+    return <Navigate to="/employees" />
+  }
+
+  return <Outlet />
 }
 
 export default AuthLayout
