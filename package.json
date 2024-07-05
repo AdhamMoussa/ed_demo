@@ -8,7 +8,7 @@
     "dev:api": "nx run api:serve:development",
     "format": "nx format:write",
     "lint": "nx run-many --target=lint --parallel",
-    "check-types": "nx run-many --target=check-types --parallel --skip-nx-cache",
+    "ts-check": "nx run-many --target=ts-check --parallel --skip-nx-cache",
     "nx-reset": "nx reset",
     "nx-repair": "nx repair",
     "db:generate": "dotenv -e ./apps/api/.env prisma generate",
