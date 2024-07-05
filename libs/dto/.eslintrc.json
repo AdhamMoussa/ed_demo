@@ -4,11 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@nx/enforce-module-boundaries": "off",
-        "@typescript-eslint/no-namespace": "off",
-        "@typescript-eslint/no-empty-interface": "off"
-      }
+      "rules": {}
     },
     {
       "files": ["*.ts", "*.tsx"],

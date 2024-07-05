@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 
 import { PrismaModule } from './prisma/prisma.module'
+import { AuthModule } from './auth/auth.module'
 
 import { envSchema } from '../config/env'
 
@@ -12,6 +13,7 @@ import { envSchema } from '../config/env'
       validationSchema: envSchema,
     }),
     PrismaModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
