@@ -1,7 +1,7 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   root: __dirname,
@@ -17,12 +17,7 @@ export default defineConfig({
     host: 'localhost',
   },
 
-  plugins: [react(), nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+  plugins: [tsconfigPaths(), react()],
 
   build: {
     outDir: '../../dist/apps/frontend',

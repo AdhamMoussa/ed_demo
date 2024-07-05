@@ -1,12 +1,13 @@
-import { BrowserRouter } from 'react-router-dom'
-
+import RootProvider from './providers/RootProvider'
 import RootRoute from './routes/RootRoute'
+
+import '@mantine/core/styles.css'
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <RootProvider>
       <RootRoute />
-    </BrowserRouter>
+    </RootProvider>
   )
 }
 
