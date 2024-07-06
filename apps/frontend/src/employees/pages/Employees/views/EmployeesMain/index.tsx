@@ -4,7 +4,7 @@ import EmployeesHeader from '../EmployeesHeader'
 import EmployeesTable from '../EmployeesTable'
 import EmptyView from '../EmployeesTable/EmptyView'
 
-import { useEmployeesFiltersStore } from '@fe/employees/stores/employees-filters'
+import { useEmployeesFiltersStore } from '@fe/employees/pages/Employees/stores/employees-filters'
 import { useEmployeesListQuery } from '@fe/employees/hooks/queries/useEmployeesListQuery'
 import { useDebouncedValue } from '@mantine/hooks'
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common'
 
 import { EmployeeService } from './employee.service'
 
@@ -33,5 +33,15 @@ export class EmployeesController {
     @Body() params: CreateEmployeeInput,
   ) {
     return this.employeesService.createEmployee(user, params)
+  }
+
+  @Put('/:id')
+  @Validate(createEmployeeInputSchema)
+  async editEmployee(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+    @Body() params: CreateEmployeeInput,
+  ) {
+    return this.employeesService.editEmployee(user, id, params)
   }
 }

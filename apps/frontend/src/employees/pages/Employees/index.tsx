@@ -1,6 +1,7 @@
 import { Helmet } from 'react-helmet'
 
 import EmployeesMain from './views/EmployeesMain'
+import Modals from './views/Modals'
 
 const EmployeesPage = () => {
   return (
@@ -10,6 +11,8 @@ const EmployeesPage = () => {
       </Helmet>
 
       <EmployeesMain />
+
+      <Modals />
     </>
   )
 }

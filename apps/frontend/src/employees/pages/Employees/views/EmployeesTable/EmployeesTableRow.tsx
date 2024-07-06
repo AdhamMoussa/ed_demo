@@ -3,17 +3,18 @@ import numeral from 'numeral'
 import dayjs from 'dayjs'
 
 import { ActionIcon, Group, rem, Table, Tooltip } from '@mantine/core'
-
-import { EmployeesListOutput } from '@ed-demo/dto'
 import { TbArchive, TbEdit } from 'react-icons/tb'
 
+import { EmployeeOutput } from '@ed-demo/dto'
+
 type EmployeesTableRowProps = {
-  employee: EmployeesListOutput['items'][0]
+  employee: EmployeeOutput
   currencySymbol?: string
+  onEdit: (employee: EmployeeOutput) => void
 }
 
 const EmployeesTableRow = (props: EmployeesTableRowProps) => {
-  const { employee, currencySymbol } = props
+  const { employee, currencySymbol, onEdit } = props
 
   const totalAllowances = useMemo(
     () => employee.allowances.reduce((total, item) => total + item.amount, 0),
@@ -41,7 +42,7 @@ const EmployeesTableRow = (props: EmployeesTableRowProps) => {
       <Table.Td pr="lg" w={rem(110)}>
         <Group justify="flex-end">
           <Tooltip label="Edit">
-            <ActionIcon variant="subtle">
+            <ActionIcon variant="subtle" onClick={() => onEdit(employee)}>
               <TbEdit />
             </ActionIcon>
           </Tooltip>

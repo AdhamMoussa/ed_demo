@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { WretchError } from 'wretch'
 
 import { getMe } from '@fe/auth/api/auth'
 
@@ -11,7 +11,7 @@ export const ME_QUERY_KEY = '/users/me'
 export const getMeQueryKey = (): MeQueryKey => [ME_QUERY_KEY]
 
 export const useMeQuery = () => {
-  const query = useQuery<MeOutput, AxiosError, MeOutput, MeQueryKey>({
+  const query = useQuery<MeOutput, WretchError, MeOutput, MeQueryKey>({
     queryKey: getMeQueryKey(),
     queryFn: getMe,
   })

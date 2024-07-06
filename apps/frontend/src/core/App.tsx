@@ -2,6 +2,7 @@ import RootProvider from './providers/RootProvider'
 import RootRoute from './routes/RootRoute'
 
 import '@mantine/core/styles.css'
+import '@mantine/dates/styles.css'
 
 const App = () => {
   return (

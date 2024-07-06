@@ -16,8 +16,12 @@ export const createEmployeeInputSchema = z.object({
   allowances: z
     .array(
       z.object({
-        name: z.string(),
-        amount: z.number().gt(0),
+        name: z
+          .string({ required_error: 'Allowance name is required' })
+          .min(1, { message: 'Allowance name is required' }),
+        amount: z
+          .number({ required_error: 'Amount is required' })
+          .gt(0, 'Amount must be greater than 0'),
       }),
     )
     .optional(),

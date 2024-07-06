@@ -3,7 +3,8 @@ import { Center, Table, Text } from '@mantine/core'
 import EmployeesTableRow from './EmployeesTableRow'
 import LoadingSkeleton from './LoadingSkeleton'
 
-import { useMeQuery } from '@fe/auth/hooks/queries/useMeQuery'
+import { useCurrentOrg } from '@fe/organizations/hooks/useCurrentOrg'
+import { useEmployeesModalsStore } from '../../stores/employees-modals'
 
 import { EmployeesListOutput } from '@ed-demo/dto'
 
@@ -15,9 +16,11 @@ type EmployeesTableProps = {
 const EmployeesTable = (props: EmployeesTableProps) => {
   const { list, isLoading } = props
 
-  const { data: userData } = useMeQuery()
+  const openEditEmployeeModal = useEmployeesModalsStore(
+    state => state.editEmployee.open,
+  )
 
-  const org = userData?.organization
+  const org = useCurrentOrg()
 
   return (
     <Table.ScrollContainer minWidth={800} bg="white">
@@ -47,6 +50,7 @@ const EmployeesTable = (props: EmployeesTableProps) => {
                 key={employee.id}
                 employee={employee}
                 currencySymbol={org?.currency.symbol}
+                onEdit={openEditEmployeeModal}
               />
             ))
           )}

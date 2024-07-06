@@ -1,5 +1,5 @@
 import { QueryFunction, useQuery } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { WretchError } from 'wretch'
 
 import { getEmployees } from '@fe/employees/api/employees'
 
@@ -20,7 +20,7 @@ const queryFn: QueryFunction<EmployeesListOutput, EmployeesListQueryKey> = ({
 export const useEmployeesListQuery = (args: EmployeesLisInput) => {
   const query = useQuery<
     EmployeesListOutput,
-    AxiosError,
+    WretchError,
     EmployeesListOutput,
     EmployeesListQueryKey
   >({
