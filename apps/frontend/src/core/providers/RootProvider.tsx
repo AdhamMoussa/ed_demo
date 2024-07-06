@@ -11,8 +11,6 @@ import { theme } from '../utils/theme'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
-      retryOnMount: false,
       staleTime: 1000 * 60 * 2,
     },
   },

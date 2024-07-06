@@ -39,10 +39,9 @@ model Profile {
 }
 
 model Organization {
-  id       String @id @default(cuid())
-  slug     String @unique
-  name     String
-  currency String
+  id   String @id @default(cuid())
+  slug String @unique
+  name String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -50,16 +49,20 @@ model Organization {
   ownerId String @unique
   owner   User   @relation(fields: [ownerId], references: [id])
 
+  currencyCode String
+  currency     Currency @relation(fields: [currencyCode], references: [code])
+
   employees Employee[]
 }
 
 model Employee {
-  id          String @id @default(cuid())
-  staffId     String @unique
+  id          String   @id @default(cuid())
+  staffId     String   @unique
   firstName   String
   lastName    String
   basicSalary Float
   allowances  Json[]
+  joinedAt    DateTime
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -79,4 +82,13 @@ model SalaryPayment {
 
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])
+}
+
+model Currency {
+  id     String @id @default(cuid())
+  code   String @unique
+  name   String
+  symbol String
+
+  organizations Organization[]
 }

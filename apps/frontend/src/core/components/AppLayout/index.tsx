@@ -29,7 +29,7 @@ function AppLayout() {
         <AppSideMenu />
       </AppShell>
 
-      <Box ml={rem('270px')} bg="gray.3" mih="100vh">
+      <Box ml={rem('270px')} px="xl" py="lg" bg="gray.1" mih="100vh">
         <Outlet />
       </Box>
     </AppLoading>

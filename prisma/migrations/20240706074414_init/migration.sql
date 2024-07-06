@@ -27,10 +27,10 @@ CREATE TABLE "Organization" (
     "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "currency" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "ownerId" TEXT NOT NULL,
+    "currencyCode" TEXT NOT NULL,
 
     CONSTRAINT "Organization_pkey" PRIMARY KEY ("id")
 );
@@ -43,6 +43,7 @@ CREATE TABLE "Employee" (
     "lastName" TEXT NOT NULL,
     "basicSalary" DOUBLE PRECISION NOT NULL,
     "allowances" JSONB[],
+    "joinedAt" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "organizationId" TEXT NOT NULL,
@@ -60,6 +61,16 @@ CREATE TABLE "SalaryPayment" (
     "employeeId" TEXT NOT NULL,
 
     CONSTRAINT "SalaryPayment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Currency" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "symbol" TEXT NOT NULL,
+
+    CONSTRAINT "Currency_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -80,11 +91,17 @@ CREATE UNIQUE INDEX "Organization_ownerId_key" ON "Organization"("ownerId");
 -- CreateIndex
 CREATE UNIQUE INDEX "Employee_staffId_key" ON "Employee"("staffId");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Currency_code_key" ON "Currency"("code");
+
 -- AddForeignKey
 ALTER TABLE "Profile" ADD CONSTRAINT "Profile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Organization" ADD CONSTRAINT "Organization_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Organization" ADD CONSTRAINT "Organization_currencyCode_fkey" FOREIGN KEY ("currencyCode") REFERENCES "Currency"("code") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Employee" ADD CONSTRAINT "Employee_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "Organization"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
