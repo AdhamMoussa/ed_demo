@@ -1,4 +1,4 @@
-import { SigninInput, SignupInput, SuccessOutput } from '@ed-demo/dto'
+import { MeOutput, SigninInput, SignupInput, SuccessOutput } from '@ed-demo/dto'
 
 import { api } from '@fe/core/utils/api'
 import { removeAuthToken } from '@fe/core/utils/authToken'
@@ -15,4 +15,8 @@ export const signout = () => {
   api.url('/v1/auth/sign_out').delete()
   removeAuthToken()
   window.location.href = '/auth/signin'
+}
+
+export const getMe = () => {
+  return api.url('/v1/users/me').get().json<MeOutput>()
 }

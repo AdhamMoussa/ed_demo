@@ -10,7 +10,7 @@ const authMiddleware: ConfiguredMiddleware = next => async (url, opts) => {
 
   opts.headers = {
     ...opts.headers,
-    ...(accessToken ? { Authorization: accessToken } : {}),
+    ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
   }
 
   return next(url, opts)

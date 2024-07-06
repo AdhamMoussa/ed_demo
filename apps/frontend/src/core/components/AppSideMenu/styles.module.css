@@ -1,0 +1,22 @@
+.navList {
+  height: calc(100vh - rem(140px));
+  padding: var(--mantine-spacing-sm);
+  gap: var(--mantine-spacing-xs) !important;
+}
+
+.navLink {
+  padding: rem(8px);
+  border-radius: var(--mantine-radius-md);
+  color: var(--mantine-color-dark-1);
+  transition: background-color color 100ms ease;
+
+  @mixin hover {
+    background-color: var(--mantine-color-violet-3);
+    color: var(--mantine-color-dark-7);
+  }
+
+  &.activeNavLink {
+    background-color: var(--mantine-color-violet-3);
+    color: var(--mantine-color-dark-7);
+  }
+}
