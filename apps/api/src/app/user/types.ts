@@ -1,8 +1,12 @@
-import { Profile, User as DBUser, Organization } from '@prisma/client'
+import { Profile, User as DBUser, Organization, Currency } from '@prisma/client'
 
 export type AuthUser = DBUser & {
   profile: Profile | null
-  organization: Organization | null
+  organization:
+    | (Organization & {
+        currency: Currency
+      })
+    | null
 }
 
 declare global {

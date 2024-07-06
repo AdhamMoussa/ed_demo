@@ -9,7 +9,12 @@ const organizationSchema = z.object({
   id: z.string(),
   slug: z.string(),
   name: z.string(),
-  currency: z.string(),
+  currency: z.object({
+    id: z.string(),
+    code: z.string(),
+    name: z.string(),
+    symbol: z.string(),
+  }),
 })
 
 export const meOutputSchema = z.object({
