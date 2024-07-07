@@ -6,10 +6,10 @@ import LoadingSkeleton from './LoadingSkeleton'
 import { useCurrentOrg } from '@fe/organizations/hooks/useCurrentOrg'
 import { useEmployeesModalsStore } from '../../stores/employees-modals'
 
-import { EmployeesListOutput } from '@ed-demo/dto'
+import { EmployeeOutput } from '@ed-demo/dto'
 
 type EmployeesTableProps = {
-  list: EmployeesListOutput['items']
+  list: EmployeeOutput[]
   isLoading?: boolean
 }
 

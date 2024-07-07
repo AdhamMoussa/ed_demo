@@ -1,5 +1,6 @@
 export * from './common'
 export * from './auth'
 export * from './user'
-export * from './employee'
 export * from './organization'
+export * from './employee'
+export * from './salaries'

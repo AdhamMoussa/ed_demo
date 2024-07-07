@@ -1,15 +1,17 @@
+import { memo } from 'react'
+
 import { Box, Center, Pagination, Title } from '@mantine/core'
 
-import EmployeesHeader from '../EmployeesHeader'
-import EmployeesTable from '../EmployeesTable'
 import EmptyView from './EmptyView'
+import SalariesTable from '../SalariesTable'
+import SalariesHeader from '../SalariesHeader'
 
-import { useEmployeesFiltersStore } from '@fe/employees/pages/Employees/stores/employees-filters'
-import { useEmployeesListQuery } from '@fe/employees/hooks/queries/useEmployeesListQuery'
 import { useDebouncedValue } from '@mantine/hooks'
+import { useEmployeesListQuery } from '@fe/employees/hooks/queries/useEmployeesListQuery'
+import { useSalariesFiltersStore } from '../../stores/salaries-filters'
 
-const EmployeesMain = () => {
-  const { limit = 10, page = 1, search, setPage } = useEmployeesFiltersStore()
+const SalariesMain = () => {
+  const { limit = 10, page = 1, search, setPage } = useSalariesFiltersStore()
 
   const [debouncedSearch] = useDebouncedValue(search, 500)
 
@@ -22,16 +24,16 @@ const EmployeesMain = () => {
   return (
     <Box>
       <Title order={2} mb="xl">
-        Employees
+        Salaries
       </Title>
 
       {!isLoading && !search && data?.items.length === 0 ? (
         <EmptyView />
       ) : (
         <>
-          <EmployeesHeader />
+          <SalariesHeader />
 
-          <EmployeesTable list={data?.items || []} isLoading={isLoading} />
+          <SalariesTable list={data?.items || []} isLoading={isLoading} />
 
           <Center py="md">
             <Pagination
@@ -48,4 +50,4 @@ const EmployeesMain = () => {
   )
 }
 
-export default EmployeesMain
+export default memo(SalariesMain)

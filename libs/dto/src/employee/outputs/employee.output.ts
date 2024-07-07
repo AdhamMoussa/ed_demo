@@ -13,6 +13,11 @@ export const employeeOutputSchema = z.object({
     }),
   ),
   joinedAt: z.string().datetime(),
+  salaryPayments: z.array(
+    z.object({
+      month: z.string().datetime(),
+    }),
+  ),
 })
 
 export type EmployeeOutput = z.infer<typeof employeeOutputSchema>

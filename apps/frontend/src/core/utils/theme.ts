@@ -5,5 +5,5 @@ export const theme = createTheme({
   headings: {
     fontFamily: 'Montserrat, sans-serif',
   },
-  primaryColor: 'violet',
+  primaryColor: 'teal',
 })

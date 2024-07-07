@@ -11,12 +11,12 @@
   transition: background-color color 100ms ease;
 
   @mixin hover {
-    background-color: var(--mantine-color-violet-3);
+    background-color: var(--mantine-color-teal-1);
     color: var(--mantine-color-dark-7);
   }
 
   &.activeNavLink {
-    background-color: var(--mantine-color-violet-3);
+    background-color: var(--mantine-color-teal-1);
     color: var(--mantine-color-dark-7);
   }
 }

@@ -63,6 +63,7 @@ model Employee {
   basicSalary Float
   allowances  Json[]
   joinedAt    DateTime
+  isArchived  Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,11 +75,14 @@ model Employee {
 }
 
 model SalaryPayment {
-  id          String @id @default(cuid())
-  month       Int
-  year        Int
+  id          String   @id @default(cuid())
+  month       DateTime
   basicSalary Float
   allowances  Float
+  additions   Float
+  deductions  Float
+  paymentDate DateTime @default(now())
+  isGratuity  Boolean? @default(false)
 
   employeeId String
   employee   Employee @relation(fields: [employeeId], references: [id])

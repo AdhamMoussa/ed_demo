@@ -44,6 +44,13 @@ export class EmployeeService {
       where: query,
       take: limit,
       skip: (page - 1) * limit,
+      include: {
+        salaryPayments: {
+          select: {
+            month: true,
+          },
+        },
+      },
     })
 
     const count = await this.prisma.employee.count({
@@ -56,6 +63,9 @@ export class EmployeeService {
       page,
       items: employees.map(employee => ({
         ...employee,
+        salaryPayments: employee.salaryPayments.map(payment => ({
+          month: payment.month.toISOString(),
+        })),
         joinedAt: employee.joinedAt.toISOString(),
       })),
     })
