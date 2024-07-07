@@ -15,6 +15,8 @@ import {
 
 import { TbCheck, TbRestore } from 'react-icons/tb'
 
+import PaymentsSummaryModal from '../PaymentsSummaryModal'
+
 import { useSalariesPaymentStore } from '../../stores/salaries-payment'
 import { useSalariesFiltersStore } from '../../stores/salaries-filters'
 import { usePaymentsState } from '../../hooks/usePaymentsState'
@@ -83,13 +85,18 @@ const SalariesHeader = () => {
             Reset
           </Button>
 
-          <Button
-            size="xs"
-            leftSection={<TbCheck />}
-            disabled={validPaymentsCount === 0}
-          >
-            Process Salaries
-          </Button>
+          <PaymentsSummaryModal>
+            {open => (
+              <Button
+                size="xs"
+                leftSection={<TbCheck />}
+                disabled={validPaymentsCount === 0}
+                onClick={open}
+              >
+                Process Salaries
+              </Button>
+            )}
+          </PaymentsSummaryModal>
         </Group>
       </Flex>
 

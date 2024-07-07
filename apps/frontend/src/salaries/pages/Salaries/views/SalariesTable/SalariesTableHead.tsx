@@ -23,6 +23,8 @@ const SalariesTableHead = () => {
 
       <Table.Th>Total</Table.Th>
 
+      <Table.Th>Gratuity</Table.Th>
+
       <Table.Th w={rem(44)} p={0} />
     </Table.Tr>
   )

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useSalariesPaymentStore } from '../stores/salaries-payment'
 
-import { salaryPaymentSchema } from '@ed-demo/dto'
+import { SalaryPayment, salaryPaymentSchema } from '@ed-demo/dto'
 
 export const usePaymentsState = () => {
   const payments = useSalariesPaymentStore(state => state.payments)
@@ -11,9 +11,9 @@ export const usePaymentsState = () => {
     return Object.entries(payments)
       .filter(([, payment]) => salaryPaymentSchema.safeParse(payment).success)
       .reduce((acc, [id, payment]) => {
-        acc[id] = payment
+        acc[id] = payment as SalaryPayment
         return acc
-      }, {} as typeof payments)
+      }, {} as Record<string, SalaryPayment>)
   }, [payments])
 
   const totalPaymentsAmount = useMemo(() => {
@@ -33,9 +33,31 @@ export const usePaymentsState = () => {
     [validPayments],
   )
 
+  const totalDeductions = useMemo(() => {
+    return Object.values(validPayments).reduce(
+      (total, { deductions = 0 }) => total + deductions,
+      0,
+    )
+  }, [validPayments])
+
+  const totalAdditions = useMemo(() => {
+    return Object.values(validPayments).reduce(
+      (total, { additions = 0 }) => total + additions,
+      0,
+    )
+  }, [validPayments])
+
+  const endOfServiceCount = useMemo(() => {
+    return Object.values(validPayments).filter(({ isGratuity }) => isGratuity)
+      .length
+  }, [validPayments])
+
   return {
     validPayments,
     totalPaymentsAmount,
     validPaymentsCount,
+    totalDeductions,
+    totalAdditions,
+    endOfServiceCount,
   }
 }

@@ -2,7 +2,14 @@ import { memo, useMemo } from 'react'
 import dayjs from 'dayjs'
 import numeral from 'numeral'
 
-import { ActionIcon, Badge, NumberInput, rem, Table } from '@mantine/core'
+import {
+  ActionIcon,
+  Badge,
+  Checkbox,
+  NumberInput,
+  rem,
+  Table,
+} from '@mantine/core'
 import { MonthPickerInput } from '@mantine/dates'
 import { TbMinus, TbX } from 'react-icons/tb'
 
@@ -22,7 +29,12 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
     state => state.payments[employee.id] || {},
   )
 
-  const { additions = 0, deductions = 0, month = null } = payment
+  const {
+    additions = 0,
+    deductions = 0,
+    month = null,
+    isGratuity = false,
+  } = payment
 
   const setPayment = useSalariesPaymentStore(state => state.setPayment)
   const removePayment = useSalariesPaymentStore(state => state.removePayment)
@@ -37,10 +49,16 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
     [employee.basicSalary, totalAllowances, additions, deductions],
   )
 
-  const minDate =
-    [...employee.salaryPayments]
-      .sort((a, b) => new Date(a.month).getTime() - new Date(b.month).getTime())
-      .pop()?.month || employee.joinedAt
+  const minDate = useMemo(() => {
+    const lastPaidMonth = employee.salaryPayments
+      .map(p => new Date(p.month).getTime())
+      .sort()
+      .pop()
+
+    return lastPaidMonth
+      ? dayjs(lastPaidMonth).add(1, 'month').toDate()
+      : dayjs(employee.joinedAt).endOf('month').toDate()
+  }, [employee])
 
   const isValid = salaryPaymentSchema.safeParse(payment).success
 
@@ -64,15 +82,15 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
 
       <Table.Td>
         <MonthPickerInput
-          value={month}
+          value={month ? new Date(month) : null}
           placeholder="Select..."
           w={rem(120)}
           valueFormat="MMM YYYY"
-          minDate={new Date(minDate)}
+          minDate={minDate}
           maxDate={new Date()}
           onChange={value => {
             if (value) {
-              setPayment(employee, { month: value ?? undefined })
+              setPayment(employee, { month: value.toISOString() })
             }
           }}
         />
@@ -114,6 +132,16 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
         ) : (
           <TbMinus />
         )}
+      </Table.Td>
+
+      <Table.Td>
+        <Checkbox
+          checked={isGratuity}
+          disabled={!month}
+          onChange={() => {
+            setPayment(employee, { isGratuity: !payment.isGratuity })
+          }}
+        />
       </Table.Td>
 
       <Table.Td w={rem(44)} p={0}>

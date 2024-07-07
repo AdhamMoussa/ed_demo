@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module'
 import { UserModule } from './user/user.module'
 import { OrganizationModule } from './organization/organization.module'
 import { EmployeesModule } from './employee/employees.module'
+import { SalaryModule } from './salary/salary.module'
 
 import { envSchema } from '../config/env'
 
@@ -20,6 +21,7 @@ import { envSchema } from '../config/env'
     UserModule,
     OrganizationModule,
     EmployeesModule,
+    SalaryModule,
   ],
   controllers: [],
   providers: [],

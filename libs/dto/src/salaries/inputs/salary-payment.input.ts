@@ -7,7 +7,9 @@ export const salaryPaymentSchema = z.object({
   allowances: z.number(),
   additions: z.number(),
   deductions: z.number(),
-  month: z.date({ coerce: true, required_error: 'Month is required' }),
+  month: z
+    .string({ required_error: 'Month is required' })
+    .datetime({ message: 'Invalid month' }),
   isGratuity: z.boolean().optional(),
 })
 

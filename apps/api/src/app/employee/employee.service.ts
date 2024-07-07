@@ -33,6 +33,7 @@ export class EmployeeService {
 
     const query: Prisma.EmployeeWhereInput = {
       organizationId: user.organization.id,
+      isArchived: false,
       OR: [
         { firstName: { contains: search, mode: 'insensitive' } },
         { lastName: { contains: search, mode: 'insensitive' } },
