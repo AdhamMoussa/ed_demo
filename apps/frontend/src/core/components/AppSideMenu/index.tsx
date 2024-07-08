@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import {
   AppShell,
   Box,
-  Center,
+  Button,
   Divider,
   Group,
   Stack,
@@ -16,12 +16,13 @@ import {
 
 import {
   TbBrandReact,
+  TbChevronLeft,
   TbLogs,
   TbReportMoney,
   TbUsersGroup,
 } from 'react-icons/tb'
 
-import UserDropdown from '@fe/auth/components/UserDropdown'
+import { useLayoutStore } from '@fe/core/stores/layout'
 
 import classes from './styles.module.css'
 
@@ -44,6 +45,8 @@ const items = [
 ]
 
 const AppSideMenu = () => {
+  const toggleMenu = useLayoutStore(state => state.toggleMobileSidebar)
+
   return (
     <AppShell.Navbar withBorder={false} bg="dark.7">
       <Box px={rem('20px')} py={rem('15px')}>
@@ -62,7 +65,12 @@ const AppSideMenu = () => {
 
       <Stack className={classes.navList}>
         {items.map(item => (
-          <Link key={item.to} to={item.to} style={{ textDecoration: 'none' }}>
+          <Link
+            key={item.to}
+            to={item.to}
+            style={{ textDecoration: 'none' }}
+            onClick={toggleMenu}
+          >
             {({ isActive }) => (
               <Group
                 gap={0}
@@ -83,9 +91,15 @@ const AppSideMenu = () => {
         ))}
       </Stack>
 
-      <Center h={rem('70px')}>
-        <UserDropdown />
-      </Center>
+      <Button
+        leftSection={<TbChevronLeft />}
+        variant="light"
+        hiddenFrom="sm"
+        fullWidth
+        onClick={toggleMenu}
+      >
+        Close Menu
+      </Button>
     </AppShell.Navbar>
   )
 }

@@ -1,4 +1,4 @@
-import { Box, Center, Pagination, Title } from '@mantine/core'
+import { Box, Center, Pagination } from '@mantine/core'
 
 import EmployeesHeader from '../EmployeesHeader'
 import EmployeesTable from '../EmployeesTable'
@@ -21,11 +21,7 @@ const EmployeesMain = () => {
 
   return (
     <Box>
-      <Title order={2} mb="xl">
-        Employees
-      </Title>
-
-      {!isLoading && !search && data?.items.length === 0 ? (
+      {!isLoading && !debouncedSearch && data?.items.length === 0 ? (
         <EmptyView />
       ) : (
         <>

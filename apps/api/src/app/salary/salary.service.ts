@@ -20,10 +20,7 @@ export class SalaryService {
     }
 
     await this.prisma.salaryPayment.createMany({
-      data: Object.entries(payments).map(([employeeId, payment]) => ({
-        employeeId,
-        ...payment,
-      })),
+      data: payments,
     })
 
     const endOfServiceEmployeesIds = Object.entries(payments)

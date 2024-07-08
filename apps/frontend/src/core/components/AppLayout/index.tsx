@@ -1,15 +1,19 @@
 import { memo } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 
-import { AppShell, Box, rem } from '@mantine/core'
+import { AppShell, rem } from '@mantine/core'
 
 import AppLoading from '../AppLoading'
 import AppSideMenu from '../AppSideMenu'
+
+import { useLayoutStore } from '@fe/core/stores/layout'
 
 import { getAuthToken } from '@fe/core/utils/authToken'
 
 function AppLayout() {
   const authToken = getAuthToken()
+
+  const { isMobileSidebarOpen } = useLayoutStore()
 
   if (!authToken) {
     return (
@@ -23,15 +27,20 @@ function AppLayout() {
   return (
     <AppLoading>
       <AppShell
-        navbar={{ width: rem('270px'), breakpoint: 'sm' }}
+        navbar={{
+          width: rem('270px'),
+          breakpoint: 'sm',
+          collapsed: {
+            desktop: false,
+            mobile: !isMobileSidebarOpen,
+          },
+        }}
         header={{ height: rem(64), offset: false }}
       >
         <AppSideMenu />
-      </AppShell>
 
-      <Box ml={rem('270px')} px="xl" py="lg" bg="gray.1" mih="100vh">
         <Outlet />
-      </Box>
+      </AppShell>
     </AppLoading>
   )
 }

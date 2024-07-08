@@ -2,6 +2,8 @@ import { Helmet } from 'react-helmet'
 
 import EmployeesMain from './views/EmployeesMain'
 import Modals from './views/Modals'
+import AppHeader from '@fe/core/components/AppHeader'
+import AppMain from '@fe/core/components/AppMain'
 
 const EmployeesPage = () => {
   return (
@@ -10,7 +12,11 @@ const EmployeesPage = () => {
         <title>Employees | Ed Payroll Portal</title>
       </Helmet>
 
-      <EmployeesMain />
+      <AppHeader title="Employees" />
+
+      <AppMain>
+        <EmployeesMain />
+      </AppMain>
 
       <Modals />
     </>

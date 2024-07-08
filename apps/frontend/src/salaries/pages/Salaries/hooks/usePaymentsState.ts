@@ -2,22 +2,19 @@ import { useMemo } from 'react'
 
 import { useSalariesPaymentStore } from '../stores/salaries-payment'
 
-import { SalaryPayment, salaryPaymentSchema } from '@ed-demo/dto'
+import { salaryPaymentSchema } from '@ed-demo/dto'
 
 export const usePaymentsState = () => {
   const payments = useSalariesPaymentStore(state => state.payments)
 
   const validPayments = useMemo(() => {
-    return Object.entries(payments)
-      .filter(([, payment]) => salaryPaymentSchema.safeParse(payment).success)
-      .reduce((acc, [id, payment]) => {
-        acc[id] = payment as SalaryPayment
-        return acc
-      }, {} as Record<string, SalaryPayment>)
+    return payments.filter(
+      payment => salaryPaymentSchema.safeParse(payment).success,
+    )
   }, [payments])
 
   const totalPaymentsAmount = useMemo(() => {
-    return Object.values(validPayments).reduce(
+    return validPayments.reduce(
       (
         total,
         { basicSalary = 0, allowances = 0, additions = 0, deductions = 0 },
@@ -28,34 +25,46 @@ export const usePaymentsState = () => {
     )
   }, [validPayments])
 
-  const validPaymentsCount = useMemo(
-    () => Object.keys(validPayments).length,
-    [validPayments],
-  )
+  const validPaymentsCount = validPayments.length
+
+  const totalBasicSalaries = useMemo(() => {
+    return validPayments.reduce(
+      (total, { basicSalary = 0 }) => total + basicSalary,
+      0,
+    )
+  }, [validPayments])
+
+  const totalAllowances = useMemo(() => {
+    return validPayments.reduce(
+      (total, { allowances = 0 }) => total + allowances,
+      0,
+    )
+  }, [validPayments])
 
   const totalDeductions = useMemo(() => {
-    return Object.values(validPayments).reduce(
+    return validPayments.reduce(
       (total, { deductions = 0 }) => total + deductions,
       0,
     )
   }, [validPayments])
 
   const totalAdditions = useMemo(() => {
-    return Object.values(validPayments).reduce(
+    return validPayments.reduce(
       (total, { additions = 0 }) => total + additions,
       0,
     )
   }, [validPayments])
 
   const endOfServiceCount = useMemo(() => {
-    return Object.values(validPayments).filter(({ isGratuity }) => isGratuity)
-      .length
+    return validPayments.filter(({ isGratuity }) => isGratuity).length
   }, [validPayments])
 
   return {
     validPayments,
     totalPaymentsAmount,
     validPaymentsCount,
+    totalBasicSalaries,
+    totalAllowances,
     totalDeductions,
     totalAdditions,
     endOfServiceCount,

@@ -1,6 +1,9 @@
 import { z } from 'zod'
 
 export const salaryPaymentSchema = z.object({
+  employeeId: z
+    .string({ required_error: 'Employee ID is required' })
+    .min(1, 'Employee ID is required'),
   basicSalary: z
     .number({ required_error: 'Basic Salary is required' })
     .gt(0, 'Basic Salary must be greater than 0'),
@@ -14,7 +17,7 @@ export const salaryPaymentSchema = z.object({
 })
 
 export const salaryPaymentsInputSchema = z.object({
-  payments: z.record(z.string(), salaryPaymentSchema),
+  payments: z.array(salaryPaymentSchema),
 })
 
 export type SalaryPayment = z.infer<typeof salaryPaymentSchema>

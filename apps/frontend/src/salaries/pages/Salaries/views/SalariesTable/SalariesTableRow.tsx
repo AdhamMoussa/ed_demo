@@ -13,31 +13,33 @@ import {
 import { MonthPickerInput } from '@mantine/dates'
 import { TbMinus, TbX } from 'react-icons/tb'
 
-import { EmployeeOutput, salaryPaymentSchema } from '@ed-demo/dto'
-
-import { useSalariesPaymentStore } from '../../stores/salaries-payment'
+import { EmployeeOutput, SalaryPayment } from '@ed-demo/dto'
 
 type SalariesTableRowProps = {
   employee: EmployeeOutput
   currencySymbol?: string
+  additions: number
+  deductions: number
+  isGratuity: boolean
+  month: string | null
+  onPaymentChange: (
+    employee: EmployeeOutput,
+    payment: Partial<SalaryPayment>,
+  ) => void
+  onPaymentRemove: (employee: EmployeeOutput) => void
 }
 
 const SalariesTableRow = (props: SalariesTableRowProps) => {
-  const { employee, currencySymbol } = props
-
-  const payment = useSalariesPaymentStore(
-    state => state.payments[employee.id] || {},
-  )
-
   const {
-    additions = 0,
-    deductions = 0,
-    month = null,
-    isGratuity = false,
-  } = payment
-
-  const setPayment = useSalariesPaymentStore(state => state.setPayment)
-  const removePayment = useSalariesPaymentStore(state => state.removePayment)
+    employee,
+    currencySymbol,
+    additions,
+    deductions,
+    isGratuity,
+    month,
+    onPaymentChange,
+    onPaymentRemove,
+  } = props
 
   const totalAllowances = useMemo(
     () => employee.allowances.reduce((total, item) => total + item.amount, 0),
@@ -60,7 +62,7 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
       : dayjs(employee.joinedAt).endOf('month').toDate()
   }, [employee])
 
-  const isValid = salaryPaymentSchema.safeParse(payment).success
+  const isValid = !!month
 
   return (
     <Table.Tr bg={isValid ? 'green.0' : undefined}>
@@ -90,7 +92,7 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
           maxDate={new Date()}
           onChange={value => {
             if (value) {
-              setPayment(employee, { month: value.toISOString() })
+              onPaymentChange(employee, { month: value.toISOString() })
             }
           }}
         />
@@ -103,9 +105,10 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
           prefix={currencySymbol}
           thousandSeparator=","
           decimalScale={2}
+          w={rem(120)}
           disabled={!month}
           onChange={value =>
-            setPayment(employee, { additions: value as number })
+            onPaymentChange(employee, { additions: value as number })
           }
         />
       </Table.Td>
@@ -118,8 +121,9 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
           thousandSeparator=","
           decimalScale={2}
           disabled={!month}
+          w={rem(120)}
           onChange={value =>
-            setPayment(employee, { deductions: value as number })
+            onPaymentChange(employee, { deductions: value as number })
           }
         />
       </Table.Td>
@@ -139,7 +143,7 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
           checked={isGratuity}
           disabled={!month}
           onChange={() => {
-            setPayment(employee, { isGratuity: !payment.isGratuity })
+            onPaymentChange(employee, { isGratuity: !isGratuity })
           }}
         />
       </Table.Td>
@@ -147,7 +151,7 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
       <Table.Td w={rem(44)} p={0}>
         {isValid ? (
           <ActionIcon
-            onClick={() => removePayment(employee)}
+            onClick={() => onPaymentRemove(employee)}
             size="sm"
             variant="subtle"
           >

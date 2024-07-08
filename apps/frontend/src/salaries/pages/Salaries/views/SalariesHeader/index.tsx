@@ -74,7 +74,7 @@ const SalariesHeader = () => {
           </Group>
         </Box>
 
-        <Group>
+        <Group flex={0} justify="flex-end">
           <Button
             size="xs"
             leftSection={<TbRestore />}

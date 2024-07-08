@@ -7,6 +7,7 @@ import {
   Badge,
   Box,
   Button,
+  Card,
   Flex,
   Group,
   Modal,
@@ -35,6 +36,8 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
   const {
     totalPaymentsAmount,
     validPaymentsCount,
+    totalBasicSalaries,
+    totalAllowances,
     totalAdditions,
     totalDeductions,
     endOfServiceCount,
@@ -46,9 +49,7 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
 
   const submitHandler = useCallback(() => {
     createPayment(
-      {
-        payments: validPayments,
-      },
+      { payments: validPayments },
       {
         onSuccess: () => {
           clearStore()
@@ -86,8 +87,26 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
               in salaries.
             </Text>
 
-            <Box mb="lg">
-              <Group>
+            <Card mb="lg" bg="gray.1">
+              <Group justify="space-between">
+                <Title order={6}>Basic Salaries:</Title>
+                <Badge color="green" variant="light" size="lg">
+                  {numeral(totalBasicSalaries).format(
+                    `${org?.currency.symbol}0,0.[00]`,
+                  )}
+                </Badge>
+              </Group>
+
+              <Group justify="space-between">
+                <Title order={6}>Total Allowances:</Title>
+                <Badge color="green" variant="light" size="lg">
+                  {numeral(totalAllowances).format(
+                    `${org?.currency.symbol}0,0.[00]`,
+                  )}
+                </Badge>
+              </Group>
+
+              <Group justify="space-between">
                 <Title order={6}>Total Additions:</Title>
                 <Badge color="green" variant="light" size="lg">
                   {numeral(totalAdditions).format(
@@ -96,7 +115,7 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
                 </Badge>
               </Group>
 
-              <Group>
+              <Group justify="space-between">
                 <Title order={6}>Total Deductions:</Title>
                 <Badge color="red" variant="light" size="lg">
                   {numeral(totalDeductions).format(
@@ -104,10 +123,10 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
                   )}
                 </Badge>
               </Group>
-            </Box>
+            </Card>
 
             <Text>
-              It's end of service for{' '}
+              It's the end of service for{' '}
               <strong>{endOfServiceCount} employees</strong>.
             </Text>
           </Box>

@@ -62,7 +62,7 @@ const AllowancesInput = (props: AllowancesInputProps) => {
                 prefix={currencySymbol}
                 thousandSeparator=","
                 inputContainer={children => (
-                  <Group>
+                  <Group wrap="nowrap">
                     {children}
 
                     <ActionIcon

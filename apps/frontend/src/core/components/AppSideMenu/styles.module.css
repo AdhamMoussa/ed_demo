@@ -1,5 +1,6 @@
 .navList {
-  height: calc(100vh - rem(140px));
+  flex-grow: 1;
+  flex-shrink: 1;
   padding: var(--mantine-spacing-sm);
   gap: var(--mantine-spacing-xs) !important;
 }

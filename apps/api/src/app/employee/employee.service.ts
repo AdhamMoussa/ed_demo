@@ -84,11 +84,17 @@ export class EmployeeService {
         ...dto,
         organizationId: user.organization.id,
       },
+      include: {
+        salaryPayments: true,
+      },
     })
 
     return employeeOutputSchema.parseAsync({
       ...employee,
       joinedAt: employee.joinedAt.toISOString(),
+      salaryPayments: employee.salaryPayments.map(payment => ({
+        month: payment.month.toISOString(),
+      })),
     })
   }
 
@@ -112,11 +118,17 @@ export class EmployeeService {
     const updatedEmployee = await this.prisma.employee.update({
       where: { id },
       data: dto,
+      include: {
+        salaryPayments: true,
+      },
     })
 
     return employeeOutputSchema.parseAsync({
       ...updatedEmployee,
       joinedAt: updatedEmployee.joinedAt.toISOString(),
+      salaryPayments: updatedEmployee.salaryPayments.map(payment => ({
+        month: payment.month.toISOString(),
+      })),
     })
   }
 }

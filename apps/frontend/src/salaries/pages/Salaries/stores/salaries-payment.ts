@@ -1,10 +1,14 @@
 import { create } from 'zustand'
 import { produce } from 'immer'
 
-import { EmployeeOutput, SalaryPayment } from '@ed-demo/dto'
+import {
+  EmployeeOutput,
+  SalaryPayment,
+  SalaryPaymentsInput,
+} from '@ed-demo/dto'
 
 type SalariesPaymentStore = {
-  payments: Record<string, Partial<SalaryPayment>>
+  payments: SalaryPaymentsInput['payments']
   setPayment: (
     employee: EmployeeOutput,
     payment: Partial<SalaryPayment>,
@@ -14,28 +18,37 @@ type SalariesPaymentStore = {
 }
 
 export const useSalariesPaymentStore = create<SalariesPaymentStore>(set => ({
-  payments: {},
+  payments: [],
 
   setPayment: (employee, payment) => {
     set(state =>
       produce(state, draft => {
-        draft.payments[employee.id] = {
-          additions: 0,
-          deductions: 0,
-          basicSalary: employee.basicSalary,
-          isGratuity: false,
-          ...draft.payments[employee.id],
-          ...payment,
-        }
+        const currentPayment = draft.payments.find(
+          p => p.employeeId === employee.id,
+        )
 
-        if (
-          !draft.payments[employee.id].allowances &&
-          employee.allowances.length > 0
-        ) {
-          draft.payments[employee.id].allowances = employee.allowances.reduce(
-            (acc, item) => acc + item.amount,
-            0,
-          )
+        if (currentPayment) {
+          currentPayment.additions =
+            payment.additions ?? currentPayment.additions
+          currentPayment.deductions =
+            payment.deductions ?? currentPayment.deductions
+          currentPayment.month = payment.month ?? currentPayment.month
+          currentPayment.isGratuity =
+            payment.isGratuity ?? currentPayment.isGratuity
+        } else {
+          draft.payments.push({
+            additions: 0,
+            deductions: 0,
+            month: '',
+            isGratuity: false,
+            employeeId: employee.id,
+            basicSalary: employee.basicSalary,
+            allowances: employee.allowances.reduce(
+              (acc, allowance) => acc + allowance.amount,
+              0,
+            ),
+            ...payment,
+          })
         }
       }),
     )
@@ -44,9 +57,12 @@ export const useSalariesPaymentStore = create<SalariesPaymentStore>(set => ({
   removePayment: employee =>
     set(state =>
       produce(state, draft => {
-        delete draft.payments[employee.id]
+        const paymentIndex = draft.payments.findIndex(
+          p => p.employeeId === employee.id,
+        )
+        draft.payments.splice(paymentIndex, 1)
       }),
     ),
 
-  clear: () => set({ payments: {} }),
+  clear: () => set({ payments: [] }),
 }))

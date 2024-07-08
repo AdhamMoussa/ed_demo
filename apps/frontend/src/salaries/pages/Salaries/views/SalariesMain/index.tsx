@@ -1,6 +1,4 @@
-import { memo } from 'react'
-
-import { Box, Center, Pagination, Title } from '@mantine/core'
+import { Box, Center, Pagination } from '@mantine/core'
 
 import EmptyView from './EmptyView'
 import SalariesTable from '../SalariesTable'
@@ -23,11 +21,7 @@ const SalariesMain = () => {
 
   return (
     <Box>
-      <Title order={2} mb="xl">
-        Salaries
-      </Title>
-
-      {!isLoading && !search && data?.items.length === 0 ? (
+      {!isLoading && !debouncedSearch && data?.items.length === 0 ? (
         <EmptyView />
       ) : (
         <>
@@ -50,4 +44,4 @@ const SalariesMain = () => {
   )
 }
 
-export default memo(SalariesMain)
+export default SalariesMain
