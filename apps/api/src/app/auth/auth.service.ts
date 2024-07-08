@@ -59,4 +59,11 @@ export class AuthService {
 
     return token
   }
+
+  async signout(userId: string) {
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { token: null },
+    })
+  }
 }

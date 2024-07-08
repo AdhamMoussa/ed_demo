@@ -12,7 +12,7 @@ export const signup = (dto: SignupInput) => {
 }
 
 export const signout = () => {
-  api.url('/v1/auth/sign_out').delete()
+  api.url('/v1/auth/signout').delete()
   removeAuthToken()
   window.location.href = '/auth/signin'
 }
