@@ -32,7 +32,7 @@ const UserDropdown = () => {
                 {userData?.profile?.firstName} {userData?.profile?.lastName}
               </Text>
 
-              <Text size="xs" w="150px" truncate>
+              <Text size="xs" w="150px" c="gray" truncate>
                 {userData?.email}
               </Text>
             </Box>

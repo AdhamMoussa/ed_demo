@@ -5,6 +5,7 @@ import { AppShell, rem } from '@mantine/core'
 
 import AppLoading from '../AppLoading'
 import AppSideMenu from '../AppSideMenu'
+import Onboarding from '../Onboarding'
 
 import { useLayoutStore } from '@fe/core/stores/layout'
 
@@ -26,21 +27,23 @@ function AppLayout() {
 
   return (
     <AppLoading>
-      <AppShell
-        navbar={{
-          width: rem('270px'),
-          breakpoint: 'sm',
-          collapsed: {
-            desktop: false,
-            mobile: !isMobileSidebarOpen,
-          },
-        }}
-        header={{ height: rem(64), offset: false }}
-      >
-        <AppSideMenu />
+      <Onboarding>
+        <AppShell
+          navbar={{
+            width: rem('270px'),
+            breakpoint: 'sm',
+            collapsed: {
+              desktop: false,
+              mobile: !isMobileSidebarOpen,
+            },
+          }}
+          header={{ height: rem(64), offset: false }}
+        >
+          <AppSideMenu />
 
-        <Outlet />
-      </AppShell>
+          <Outlet />
+        </AppShell>
+      </Onboarding>
     </AppLoading>
   )
 }
