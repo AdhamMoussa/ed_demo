@@ -102,5 +102,8 @@
   },
   "prisma": {
     "seed": "ts-node ./prisma/seeds"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
