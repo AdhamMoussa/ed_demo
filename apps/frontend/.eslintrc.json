@@ -5,7 +5,8 @@
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@nx/enforce-module-boundaries": "off"
+        "@nx/enforce-module-boundaries": "off",
+        "react-hooks/exhaustive-deps": "error"
       }
     },
     {
