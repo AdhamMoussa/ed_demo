@@ -57,7 +57,7 @@ model Organization {
 
 model Employee {
   id          String   @id @default(cuid())
-  staffId     String   @unique
+  staffId     String
   firstName   String
   lastName    String
   basicSalary Float
@@ -72,6 +72,8 @@ model Employee {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   salaryPayments SalaryPayment[]
+
+  @@unique([staffId, organizationId])
 }
 
 model SalaryPayment {

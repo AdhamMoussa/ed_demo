@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { useDebouncedCallback } from '@mantine/hooks'
 
 import { Button, Flex, Input } from '@mantine/core'
 import { TbPlus } from 'react-icons/tb'
@@ -7,10 +8,12 @@ import { useEmployeesFiltersStore } from '@fe/employees/pages/Employees/stores/e
 import { useEmployeesModalsStore } from '../../stores/employees-modals'
 
 const EmployeesHeader = () => {
-  const setSearch = useEmployeesFiltersStore(state => state.setSearch)
+  const _setSearch = useEmployeesFiltersStore(state => state.setSearch)
   const { open: openAddEmployeeModal } = useEmployeesModalsStore(
     state => state.addEmployee,
   )
+
+  const setSearch = useDebouncedCallback(_setSearch, 300)
 
   return (
     <Flex justify="space-between">

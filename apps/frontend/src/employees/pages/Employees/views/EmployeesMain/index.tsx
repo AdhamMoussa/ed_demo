@@ -6,22 +6,19 @@ import EmptyView from './EmptyView'
 
 import { useEmployeesFiltersStore } from '@fe/employees/pages/Employees/stores/employees-filters'
 import { useEmployeesListQuery } from '@fe/employees/hooks/queries/useEmployeesListQuery'
-import { useDebouncedValue } from '@mantine/hooks'
 
 const EmployeesMain = () => {
   const { limit = 10, page = 1, search, setPage } = useEmployeesFiltersStore()
 
-  const [debouncedSearch] = useDebouncedValue(search, 500)
-
   const { data, isLoading } = useEmployeesListQuery({
     limit,
     page,
-    search: debouncedSearch,
+    search: search,
   })
 
   return (
     <Box>
-      {!isLoading && !debouncedSearch && data?.items.length === 0 ? (
+      {!isLoading && !search && data?.items.length === 0 ? (
         <EmptyView />
       ) : (
         <>

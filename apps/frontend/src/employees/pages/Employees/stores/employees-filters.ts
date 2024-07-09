@@ -11,6 +11,6 @@ export const useEmployeesFiltersStore = create<EmployeesFiltersStore>(set => ({
   page: 1,
   limit: 10,
   search: '',
-  setSearch: search => set({ search }),
+  setSearch: search => set({ search, page: 1 }),
   setPage: page => set({ page }),
 }))

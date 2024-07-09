@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-export const salaryPaymentSchema = z.object({
+export const createSalaryPaymentSchema = z.object({
   employeeId: z
     .string({ required_error: 'Employee ID is required' })
     .min(1, 'Employee ID is required'),
@@ -16,9 +16,11 @@ export const salaryPaymentSchema = z.object({
   isGratuity: z.boolean().optional(),
 })
 
-export const salaryPaymentsInputSchema = z.object({
-  payments: z.array(salaryPaymentSchema),
+export const createSalaryPaymentsInputSchema = z.object({
+  payments: z.array(createSalaryPaymentSchema),
 })
 
-export type SalaryPayment = z.infer<typeof salaryPaymentSchema>
-export type SalaryPaymentsInput = z.infer<typeof salaryPaymentsInputSchema>
+export type CreateSalaryPaymentInput = z.infer<typeof createSalaryPaymentSchema>
+export type CreateSalaryPaymentsInput = z.infer<
+  typeof createSalaryPaymentsInputSchema
+>

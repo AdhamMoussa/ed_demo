@@ -1,7 +1,6 @@
 import { memo, useCallback } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import numeral from 'numeral'
 
 import {
   Badge,
@@ -16,6 +15,8 @@ import {
 } from '@mantine/core'
 
 import { TbChevronRight } from 'react-icons/tb'
+
+import FormattedCurrency from '@fe/core/components/FormattedCurrency'
 
 import { useCurrentOrg } from '@fe/organizations/hooks/useCurrentOrg'
 import { usePaymentsState } from '../../hooks/usePaymentsState'
@@ -80,9 +81,10 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
               You're about to pay <strong>{validPaymentsCount}</strong>{' '}
               employees a total of{' '}
               <strong>
-                {numeral(totalPaymentsAmount).format(
-                  `${org?.currency.symbol}0,0.[00]`,
-                )}
+                <FormattedCurrency
+                  value={totalPaymentsAmount}
+                  currencySymbol={org?.currency.symbol}
+                />
               </strong>{' '}
               in salaries.
             </Text>
@@ -91,36 +93,40 @@ const PaymentsSummaryModal = (props: PaymentsSummaryModalProps) => {
               <Group justify="space-between">
                 <Title order={6}>Basic Salaries:</Title>
                 <Badge color="green" variant="light" size="lg">
-                  {numeral(totalBasicSalaries).format(
-                    `${org?.currency.symbol}0,0.[00]`,
-                  )}
+                  <FormattedCurrency
+                    value={totalBasicSalaries}
+                    currencySymbol={org?.currency.symbol}
+                  />
                 </Badge>
               </Group>
 
               <Group justify="space-between">
                 <Title order={6}>Total Allowances:</Title>
                 <Badge color="green" variant="light" size="lg">
-                  {numeral(totalAllowances).format(
-                    `${org?.currency.symbol}0,0.[00]`,
-                  )}
+                  <FormattedCurrency
+                    value={totalAllowances}
+                    currencySymbol={org?.currency.symbol}
+                  />
                 </Badge>
               </Group>
 
               <Group justify="space-between">
                 <Title order={6}>Total Additions:</Title>
                 <Badge color="green" variant="light" size="lg">
-                  {numeral(totalAdditions).format(
-                    `${org?.currency.symbol}0,0.[00]`,
-                  )}
+                  <FormattedCurrency
+                    value={totalAdditions}
+                    currencySymbol={org?.currency.symbol}
+                  />
                 </Badge>
               </Group>
 
               <Group justify="space-between">
                 <Title order={6}>Total Deductions:</Title>
                 <Badge color="red" variant="light" size="lg">
-                  {numeral(totalDeductions).format(
-                    `${org?.currency.symbol}0,0.[00]`,
-                  )}
+                  <FormattedCurrency
+                    value={totalDeductions}
+                    currencySymbol={org?.currency.symbol}
+                  />
                 </Badge>
               </Group>
             </Card>

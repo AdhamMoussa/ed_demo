@@ -1,9 +1,10 @@
 import { memo, useMemo } from 'react'
-import numeral from 'numeral'
 import dayjs from 'dayjs'
 
 import { ActionIcon, Group, rem, Table, Tooltip } from '@mantine/core'
 import { TbArchive, TbEdit } from 'react-icons/tb'
+
+import FormattedCurrency from '@fe/core/components/FormattedCurrency'
 
 import { EmployeeOutput } from '@ed-demo/dto'
 
@@ -32,11 +33,17 @@ const EmployeesTableRow = (props: EmployeesTableRowProps) => {
       <Table.Td>{dayjs(employee.joinedAt).format('DD MMM YYYY')}</Table.Td>
 
       <Table.Td>
-        {numeral(employee.basicSalary).format(`${currencySymbol}0,0.[00]`)}
+        <FormattedCurrency
+          value={employee.basicSalary}
+          currencySymbol={currencySymbol}
+        />
       </Table.Td>
 
       <Table.Td>
-        {numeral(totalAllowances).format(`${currencySymbol}0,0.[00]`)}
+        <FormattedCurrency
+          value={totalAllowances}
+          currencySymbol={currencySymbol}
+        />
       </Table.Td>
 
       <Table.Td pr="lg" w={rem(110)}>

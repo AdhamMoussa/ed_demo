@@ -1,6 +1,5 @@
 import { memo, useMemo } from 'react'
 import dayjs from 'dayjs'
-import numeral from 'numeral'
 
 import {
   ActionIcon,
@@ -13,7 +12,9 @@ import {
 import { MonthPickerInput } from '@mantine/dates'
 import { TbMinus, TbX } from 'react-icons/tb'
 
-import { EmployeeOutput, SalaryPayment } from '@ed-demo/dto'
+import FormattedCurrency from '@fe/core/components/FormattedCurrency'
+
+import { EmployeeOutput, CreateSalaryPaymentInput } from '@ed-demo/dto'
 
 type SalariesTableRowProps = {
   employee: EmployeeOutput
@@ -24,7 +25,7 @@ type SalariesTableRowProps = {
   month: string | null
   onPaymentChange: (
     employee: EmployeeOutput,
-    payment: Partial<SalaryPayment>,
+    payment: Partial<CreateSalaryPaymentInput>,
   ) => void
   onPaymentRemove: (employee: EmployeeOutput) => void
 }
@@ -62,6 +63,12 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
       : dayjs(employee.joinedAt).endOf('month').toDate()
   }, [employee])
 
+  const maxDate = useMemo(() => {
+    return dayjs(minDate).isBefore(dayjs(), 'month')
+      ? minDate
+      : dayjs().endOf('month').toDate()
+  }, [minDate])
+
   const isValid = !!month
 
   return (
@@ -75,11 +82,17 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
       <Table.Td>{dayjs(employee.joinedAt).format('DD MMM YYYY')}</Table.Td>
 
       <Table.Td>
-        {numeral(employee.basicSalary).format(`${currencySymbol}0,0.[00]`)}
+        <FormattedCurrency
+          value={employee.basicSalary}
+          currencySymbol={currencySymbol}
+        />
       </Table.Td>
 
       <Table.Td>
-        {numeral(totalAllowances).format(`${currencySymbol}0,0.[00]`)}
+        <FormattedCurrency
+          value={totalAllowances}
+          currencySymbol={currencySymbol}
+        />
       </Table.Td>
 
       <Table.Td>
@@ -89,7 +102,7 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
           w={rem(120)}
           valueFormat="MMM YYYY"
           minDate={minDate}
-          maxDate={new Date()}
+          maxDate={maxDate}
           onChange={value => {
             if (value) {
               onPaymentChange(employee, { month: value.toISOString() })
@@ -131,7 +144,10 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
       <Table.Td>
         {isValid ? (
           <Badge color="orange" size="lg" variant="light">
-            {numeral(totalPaymentAmount).format(`${currencySymbol}0,0.[00]`)}
+            <FormattedCurrency
+              value={totalPaymentAmount}
+              currencySymbol={currencySymbol}
+            />
           </Badge>
         ) : (
           <TbMinus />

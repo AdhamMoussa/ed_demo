@@ -1,16 +1,16 @@
 import { Box, Center, Pagination } from '@mantine/core'
 
+import PaymentsHeader from '../PaymentsHeader'
+import PaymentsTable from '../PaymentsTable'
 import EmptyView from './EmptyView'
-import SalariesTable from '../SalariesTable'
-import SalariesHeader from '../SalariesHeader'
 
-import { useEmployeesListQuery } from '@fe/employees/hooks/queries/useEmployeesListQuery'
-import { useSalariesFiltersStore } from '../../stores/salaries-filters'
+import { usePaymentsFiltersStore } from '../../stores/payments-filters'
+import { usePaymentsQuery } from '@fe/salaries/hooks/queries/usePaymentsQuery'
 
-const SalariesMain = () => {
-  const { limit = 10, page = 1, search, setPage } = useSalariesFiltersStore()
+const PaymentHistoryMain = () => {
+  const { limit = 10, page = 1, search, setPage } = usePaymentsFiltersStore()
 
-  const { data, isLoading } = useEmployeesListQuery({
+  const { data, isLoading } = usePaymentsQuery({
     limit,
     page,
     search,
@@ -22,9 +22,9 @@ const SalariesMain = () => {
         <EmptyView />
       ) : (
         <>
-          <SalariesHeader />
+          <PaymentsHeader />
 
-          <SalariesTable list={data?.items || []} isLoading={isLoading} />
+          <PaymentsTable list={data?.items || []} isLoading={isLoading} />
 
           <Center py="md">
             <Pagination
@@ -41,4 +41,4 @@ const SalariesMain = () => {
   )
 }
 
-export default SalariesMain
+export default PaymentHistoryMain

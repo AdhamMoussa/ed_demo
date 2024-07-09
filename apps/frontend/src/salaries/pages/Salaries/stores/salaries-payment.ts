@@ -3,15 +3,15 @@ import { produce } from 'immer'
 
 import {
   EmployeeOutput,
-  SalaryPayment,
-  SalaryPaymentsInput,
+  CreateSalaryPaymentInput,
+  CreateSalaryPaymentsInput,
 } from '@ed-demo/dto'
 
 type SalariesPaymentStore = {
-  payments: SalaryPaymentsInput['payments']
+  payments: CreateSalaryPaymentsInput['payments']
   setPayment: (
     employee: EmployeeOutput,
-    payment: Partial<SalaryPayment>,
+    payment: Partial<CreateSalaryPaymentInput>,
   ) => void
   removePayment: (employee: EmployeeOutput) => void
   clear: () => void

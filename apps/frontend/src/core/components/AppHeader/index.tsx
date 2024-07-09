@@ -20,7 +20,7 @@ const AppHeader = ({ title }: { title: string }) => {
             size="sm"
           />
 
-          <Title order={2}>{title}</Title>
+          <Title order={3}>{title}</Title>
         </Group>
 
         <UserDropdown />

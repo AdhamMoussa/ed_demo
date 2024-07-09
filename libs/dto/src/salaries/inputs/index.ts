@@ -1,1 +1,2 @@
-export * from './salary-payment.input'
+export * from './create-salary-payments.input'
+export * from './salary-payments.input'

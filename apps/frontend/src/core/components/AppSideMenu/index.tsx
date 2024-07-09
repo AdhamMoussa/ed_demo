@@ -17,7 +17,6 @@ import {
 import {
   TbBrandReact,
   TbChevronLeft,
-  TbLogs,
   TbReportMoney,
   TbUsersGroup,
 } from 'react-icons/tb'
@@ -36,11 +35,6 @@ const items = [
     label: 'Salaries',
     icon: <TbReportMoney size="1.4rem" />,
     to: '/salaries',
-  },
-  {
-    label: 'History',
-    icon: <TbLogs size="1.4rem" />,
-    to: '/history',
   },
 ]
 

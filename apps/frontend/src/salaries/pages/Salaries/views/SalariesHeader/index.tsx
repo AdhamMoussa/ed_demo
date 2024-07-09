@@ -1,6 +1,7 @@
 import { memo, useCallback } from 'react'
+import { Link } from 'react-router-dom'
 import { modals } from '@mantine/modals'
-import numeral from 'numeral'
+import { useDebouncedCallback } from '@mantine/hooks'
 
 import {
   Badge,
@@ -13,9 +14,10 @@ import {
   Title,
 } from '@mantine/core'
 
-import { TbCheck, TbRestore } from 'react-icons/tb'
+import { TbCheck, TbHistory, TbRestore } from 'react-icons/tb'
 
 import PaymentsSummaryModal from '../PaymentsSummaryModal'
+import FormattedCurrency from '@fe/core/components/FormattedCurrency'
 
 import { useSalariesPaymentStore } from '../../stores/salaries-payment'
 import { useSalariesFiltersStore } from '../../stores/salaries-filters'
@@ -24,7 +26,9 @@ import { useCurrentOrg } from '@fe/organizations/hooks/useCurrentOrg'
 
 const SalariesHeader = () => {
   const clear = useSalariesPaymentStore(state => state.clear)
-  const setSearch = useSalariesFiltersStore(state => state.setSearch)
+  const _setSearch = useSalariesFiltersStore(state => state.setSearch)
+
+  const setSearch = useDebouncedCallback(_setSearch, 300)
 
   const { validPaymentsCount, totalPaymentsAmount } = usePaymentsState()
 
@@ -67,9 +71,10 @@ const SalariesHeader = () => {
             <Title order={6}>Total:</Title>
 
             <Badge variant="light" color="orange" size="lg">
-              {numeral(totalPaymentsAmount).format(
-                `${org?.currency.symbol}0,0.[00]`,
-              )}
+              <FormattedCurrency
+                value={totalPaymentsAmount}
+                currencySymbol={org?.currency.symbol}
+              />
             </Badge>
           </Group>
         </Box>
@@ -100,12 +105,23 @@ const SalariesHeader = () => {
         </Group>
       </Flex>
 
-      <Input
-        placeholder="Search employees..."
-        mb="sm"
-        w="50%"
-        onChange={e => setSearch(e.target.value)}
-      />
+      <Flex justify="space-between">
+        <Input
+          placeholder="Search employees..."
+          mb="sm"
+          w="50%"
+          onChange={e => setSearch(e.target.value)}
+        />
+
+        <Button
+          variant="subtle"
+          leftSection={<TbHistory />}
+          component={Link}
+          to="/salaries/payments"
+        >
+          Payment History
+        </Button>
+      </Flex>
     </Box>
   )
 }

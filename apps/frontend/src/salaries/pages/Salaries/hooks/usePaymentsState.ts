@@ -2,14 +2,14 @@ import { useMemo } from 'react'
 
 import { useSalariesPaymentStore } from '../stores/salaries-payment'
 
-import { salaryPaymentSchema } from '@ed-demo/dto'
+import { createSalaryPaymentSchema } from '@ed-demo/dto'
 
 export const usePaymentsState = () => {
   const payments = useSalariesPaymentStore(state => state.payments)
 
   const validPayments = useMemo(() => {
     return payments.filter(
-      payment => salaryPaymentSchema.safeParse(payment).success,
+      payment => createSalaryPaymentSchema.safeParse(payment).success,
     )
   }, [payments])
 
