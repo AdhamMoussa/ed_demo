@@ -80,6 +80,22 @@ export class EmployeeService {
       })
     }
 
+    const existingEmployee = await this.prisma.employee.findFirst({
+      where: {
+        organizationId: user.organization.id,
+        staffId: dto.staffId,
+      },
+    })
+
+    if (existingEmployee) {
+      throw new CustomHttpException(HttpStatus.BAD_REQUEST, {
+        message: 'Employee with this staff id already exists',
+        fields: {
+          staffId: ['Staff ID already exists'],
+        },
+      })
+    }
+
     const employee = await this.prisma.employee.create({
       data: {
         ...dto,
@@ -114,6 +130,24 @@ export class EmployeeService {
       throw new CustomHttpException(HttpStatus.NOT_FOUND, {
         message: 'Employee not found',
       })
+    }
+
+    if (dto.staffId && dto.staffId !== employee.staffId) {
+      const existingEmployee = await this.prisma.employee.findFirst({
+        where: {
+          organizationId: user.organization.id,
+          staffId: dto.staffId,
+        },
+      })
+
+      if (existingEmployee) {
+        throw new CustomHttpException(HttpStatus.BAD_REQUEST, {
+          message: 'Employee with this staff id already exists',
+          fields: {
+            staffId: ['Staff ID already exists'],
+          },
+        })
+      }
     }
 
     const updatedEmployee = await this.prisma.employee.update({

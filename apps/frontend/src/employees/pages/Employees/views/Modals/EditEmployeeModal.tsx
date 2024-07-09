@@ -13,6 +13,7 @@ import {
   CreateEmployeeInput,
   createEmployeeInputSchema,
   EmployeeOutput,
+  ErrorOutput,
 } from '@ed-demo/dto'
 
 type EditEmployeeModalProps = {
@@ -38,6 +39,8 @@ const EditEmployeeModal = (props: EditEmployeeModalProps) => {
     },
   })
 
+  const { setError } = formMethods
+
   const submitHandler = useCallback(
     (values: CreateEmployeeInput) => {
       editEmployee(
@@ -54,10 +57,22 @@ const EditEmployeeModal = (props: EditEmployeeModalProps) => {
               color: 'green',
             })
           },
+          onError: err => {
+            const data = err.json as ErrorOutput
+
+            if (data.fields)
+              Object.entries(data.fields).forEach(([key, value]) => {
+                if (value)
+                  setError(key as keyof CreateEmployeeInput, {
+                    type: 'manual',
+                    message: value[0],
+                  })
+              })
+          },
         },
       )
     },
-    [editEmployee, employee.id, onClose],
+    [editEmployee, employee.id, onClose, setError],
   )
 
   return (

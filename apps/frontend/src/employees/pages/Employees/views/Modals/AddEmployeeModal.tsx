@@ -9,7 +9,11 @@ import EmployeeForm from '@fe/employees/components/EmployeeForm'
 
 import { useCreateEmployeeMutation } from '@fe/employees/hooks/mutations/useCreateEmployeeMutation'
 
-import { CreateEmployeeInput, createEmployeeInputSchema } from '@ed-demo/dto'
+import {
+  CreateEmployeeInput,
+  createEmployeeInputSchema,
+  ErrorOutput,
+} from '@ed-demo/dto'
 
 type AddEmployeeModalProps = {
   onClose: () => void
@@ -25,6 +29,8 @@ const AddEmployeeModal = (props: AddEmployeeModalProps) => {
     resolver: zodResolver(createEmployeeInputSchema),
   })
 
+  const { setError } = formMethods
+
   const submitHandler = useCallback(
     (values: CreateEmployeeInput) => {
       createEmployee(values, {
@@ -36,9 +42,21 @@ const AddEmployeeModal = (props: AddEmployeeModalProps) => {
             color: 'green',
           })
         },
+        onError: err => {
+          const data = err.json as ErrorOutput
+
+          if (data.fields)
+            Object.entries(data.fields).forEach(([key, value]) => {
+              if (value)
+                setError(key as keyof CreateEmployeeInput, {
+                  type: 'manual',
+                  message: value[0],
+                })
+            })
+        },
       })
     },
-    [createEmployee, onClose],
+    [createEmployee, onClose, setError],
   )
 
   return (
