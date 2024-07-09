@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common'
 
 import { EmployeeService } from './employee.service'
 
@@ -43,5 +52,13 @@ export class EmployeesController {
     @Body() params: CreateEmployeeInput,
   ) {
     return this.employeesService.editEmployee(user, id, params)
+  }
+
+  @Patch('/:id/archive')
+  async archiveEmployee(
+    @CurrentUser() user: AuthUser,
+    @Param('id') id: string,
+  ) {
+    return this.employeesService.archiveEmployee(user, id)
   }
 }

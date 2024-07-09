@@ -12,10 +12,11 @@ type EmployeesTableRowProps = {
   employee: EmployeeOutput
   currencySymbol?: string
   onEdit: (employee: EmployeeOutput) => void
+  onArchive: (employee: EmployeeOutput) => void
 }
 
 const EmployeesTableRow = (props: EmployeesTableRowProps) => {
-  const { employee, currencySymbol, onEdit } = props
+  const { employee, currencySymbol, onEdit, onArchive } = props
 
   const totalAllowances = useMemo(
     () => employee.allowances.reduce((total, item) => total + item.amount, 0),
@@ -55,7 +56,7 @@ const EmployeesTableRow = (props: EmployeesTableRowProps) => {
           </Tooltip>
 
           <Tooltip label="Archive">
-            <ActionIcon variant="subtle">
+            <ActionIcon variant="subtle" onClick={() => onArchive(employee)}>
               <TbArchive />
             </ActionIcon>
           </Tooltip>

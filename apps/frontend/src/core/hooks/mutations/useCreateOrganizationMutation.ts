@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { AxiosError } from 'axios'
+import { WretchError } from 'wretch'
 
 import { createOrganization } from '@fe/core/api/organization'
 
@@ -10,7 +10,7 @@ import { CreateOrgInput, SuccessOutput } from '@ed-demo/dto'
 export const useCreateOrganizationMutation = () => {
   const queryClient = useQueryClient()
 
-  const mutation = useMutation<SuccessOutput, AxiosError, CreateOrgInput>({
+  const mutation = useMutation<SuccessOutput, WretchError, CreateOrgInput>({
     mutationFn: createOrganization,
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: [ME_QUERY_KEY] })

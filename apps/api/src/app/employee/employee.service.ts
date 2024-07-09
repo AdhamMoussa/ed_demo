@@ -7,6 +7,7 @@ import { CustomHttpException } from '../common/CustomHttpException'
 
 import {
   CreateEmployeeInput,
+  EmployeeOutput,
   employeeOutputSchema,
   EmployeesLisInput,
   EmployeesListOutput,
@@ -118,6 +119,43 @@ export class EmployeeService {
     const updatedEmployee = await this.prisma.employee.update({
       where: { id },
       data: dto,
+      include: {
+        salaryPayments: true,
+      },
+    })
+
+    return employeeOutputSchema.parseAsync({
+      ...updatedEmployee,
+      joinedAt: updatedEmployee.joinedAt.toISOString(),
+      salaryPayments: updatedEmployee.salaryPayments.map(payment => ({
+        month: payment.month.toISOString(),
+      })),
+    })
+  }
+
+  async archiveEmployee(
+    user: AuthUser,
+    employeeId: string,
+  ): Promise<EmployeeOutput> {
+    if (!user.organization) {
+      throw new CustomHttpException(HttpStatus.BAD_REQUEST, {
+        message: 'User does not belong to any organization',
+      })
+    }
+
+    const employee = await this.prisma.employee.findUnique({
+      where: { id: employeeId, organizationId: user.organization.id },
+    })
+
+    if (!employee) {
+      throw new CustomHttpException(HttpStatus.NOT_FOUND, {
+        message: 'Employee not found',
+      })
+    }
+
+    const updatedEmployee = await this.prisma.employee.update({
+      where: { id: employeeId },
+      data: { isArchived: true },
       include: {
         salaryPayments: true,
       },

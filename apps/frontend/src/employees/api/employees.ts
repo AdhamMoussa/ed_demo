@@ -24,3 +24,7 @@ export const editEmployee = async ({
 }) => {
   return api.url(`/v1/employees/${id}`).put(dto).json<EmployeeOutput>()
 }
+
+export const archiveEmployee = async ({ id }: { id: string }) => {
+  return api.url(`/v1/employees/${id}/archive`).patch().json<EmployeeOutput>()
+}

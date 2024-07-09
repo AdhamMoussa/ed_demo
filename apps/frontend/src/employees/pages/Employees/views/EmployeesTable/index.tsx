@@ -19,6 +19,9 @@ const EmployeesTable = (props: EmployeesTableProps) => {
   const openEditEmployeeModal = useEmployeesModalsStore(
     state => state.editEmployee.open,
   )
+  const openArchiveEmployeeModal = useEmployeesModalsStore(
+    state => state.archiveEmployee.open,
+  )
 
   const org = useCurrentOrg()
 
@@ -51,6 +54,7 @@ const EmployeesTable = (props: EmployeesTableProps) => {
                 employee={employee}
                 currencySymbol={org?.currency.symbol}
                 onEdit={openEditEmployeeModal}
+                onArchive={openArchiveEmployeeModal}
               />
             ))
           )}
