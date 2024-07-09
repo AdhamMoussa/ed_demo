@@ -52,23 +52,6 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
     [employee.basicSalary, totalAllowances, additions, deductions],
   )
 
-  const minDate = useMemo(() => {
-    const lastPaidMonth = employee.salaryPayments
-      .map(p => new Date(p.month).getTime())
-      .sort()
-      .pop()
-
-    return lastPaidMonth
-      ? dayjs(lastPaidMonth).add(1, 'month').toDate()
-      : dayjs(employee.joinedAt).endOf('month').toDate()
-  }, [employee])
-
-  const maxDate = useMemo(() => {
-    return dayjs(minDate).isBefore(dayjs(), 'month')
-      ? minDate
-      : dayjs().endOf('month').toDate()
-  }, [minDate])
-
   const isValid = !!month
 
   return (
@@ -101,8 +84,19 @@ const SalariesTableRow = (props: SalariesTableRowProps) => {
           placeholder="Select..."
           w={rem(120)}
           valueFormat="MMM YYYY"
-          minDate={minDate}
-          maxDate={maxDate}
+          getMonthControlProps={date => {
+            const isBeforeJoinDate = dayjs(date).isBefore(
+              employee.joinedAt,
+              'month',
+            )
+            const isInFuture = dayjs(date).isAfter(dayjs(), 'month')
+            const isPaid = employee.salaryPayments.some(payment =>
+              dayjs(payment.month).isSame(date, 'month'),
+            )
+            return {
+              disabled: isBeforeJoinDate || isInFuture || isPaid,
+            }
+          }}
           onChange={value => {
             if (value) {
               onPaymentChange(employee, { month: value.toISOString() })
