@@ -16,3 +16,22 @@
 7. Run `npm run db:seed` to seed the database
 8. Run `npm run dev` to start the server
 9. Visit `http://localhost:3000` to view the application
+
+## Technologies
+
+### Frontend
+
+- Typescript
+- React
+- React-Query
+- Zustand
+- React Hook Form
+- Mantine
+
+### Backend
+
+- Typescript
+- Nodejs
+- Nestjs
+- Prisma
+- PostgresQL
